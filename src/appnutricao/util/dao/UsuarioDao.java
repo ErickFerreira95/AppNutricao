@@ -1,0 +1,109 @@
+package appnutricao.util.dao;
+
+import appnutricao.model.Usuario;
+import appnutricao.util.ConexaoBd;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+
+public class UsuarioDao {
+
+    private ConexaoBd conexaoBd;
+    private Connection conn;
+
+    public UsuarioDao() {
+        this.conexaoBd = new ConexaoBd();
+        this.conn = this.conexaoBd.getConexaoBd();
+    }
+
+    public List<Usuario> getUsuario() {
+        String sql = "SELECT * FROM usuario";
+
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<Usuario> listaUsuarios = new ArrayList<>();
+
+            while (rs.next()) { //.next retorna verdadeiro caso exista uma próxima posição dentro do array
+                Usuario usuario = new Usuario();
+
+                usuario.setId(rs.getInt("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setPermissao(rs.getString("permissao"));
+
+                listaUsuarios.add(usuario);
+            }
+            return listaUsuarios;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*public boolean verificarLogin(String email, String senha) {
+        String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+        
+        try (Connection conn = conexaoBd.getConexaoBd();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
+
+            ResultSet rs = stmt.executeQuery();
+
+            return rs.next(); // Se encontrou algum resultado, o login está correto
+
+        } catch (Exception e) {
+            System.out.println("Erro ao verificar login: " + e.getMessage());
+            return false;
+        }
+    }*/
+    // Salvar usuário com senha criptografada
+    public boolean salvarUsuario(String nome, String email, String senha) {
+        String sql = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
+
+        // Criptografa a senha
+        String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
+
+        try (Connection conn = conexaoBd.getConexaoBd(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            stmt.setString(2, email);
+            stmt.setString(3, senhaHash);
+
+            stmt.executeUpdate();
+            System.out.println("Usuário salvo com sucesso.");
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao salvar usuário: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Autenticar usuário
+    public boolean autenticarUsuario(String email, String senhaDigitada) {
+        String sql = "SELECT senha FROM usuario WHERE email = ?";
+
+        try (Connection conn = conexaoBd.getConexaoBd(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String senhaHash = rs.getString("senha");
+                return BCrypt.checkpw(senhaDigitada, senhaHash);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao autenticar usuário: " + e.getMessage());
+        }
+        return false;
+    }
+}
