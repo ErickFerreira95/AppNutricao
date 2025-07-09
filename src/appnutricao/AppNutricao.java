@@ -8,8 +8,16 @@ import appnutricao.view.TelaPrincipal;
 public class AppNutricao {
     public static void main(String[] args) {
         
-        /*TelaLogin login = new TelaLogin();
-        login.show();*/
+        TelaLogin login = new TelaLogin();
+        login.setVisible(true);
+        login.fazerLogin();
+        login.cadastrarUsuario();
+        
+        TelaCadastroUsuario cadastro = new TelaCadastroUsuario();
+        
+        cadastro.salvarUsuario();
+        cadastro.voltar();
+        
         
         /*UsuarioDao dao = new UsuarioDao();
         String email = "erick@email.com";
@@ -29,6 +37,6 @@ public class AppNutricao {
         boolean autenticado = dao.autenticarUsuario("mariana@email.com", "123456");
         System.out.println(autenticado ? "Login bem-sucedido" : "Email ou senha inválidos");*/
         
-        new TelaPrincipal().setVisible(true);
+        //new TelaPrincipal().setVisible(true);
     }
 }
