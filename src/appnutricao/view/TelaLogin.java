@@ -68,15 +68,15 @@ public class TelaLogin extends JFrame {
         painelCentral.setLayout(new GridBagLayout());
 
         // Posicionamento no topo absoluto
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0;
-        gbc.weighty = 0; // ← isso força ele a ficar no topo
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(20, 0, 0, 0); // margem superior
-        painelFundo.add(painelCentral, gbc);
+        GridBagConstraints posicaoPainelCentral = new GridBagConstraints();
+        posicaoPainelCentral.gridx = 0;
+        posicaoPainelCentral.gridy = 0;
+        posicaoPainelCentral.weightx = 0;
+        posicaoPainelCentral.weighty = 0; // ← isso força ele a ficar no topo
+        posicaoPainelCentral.anchor = GridBagConstraints.CENTER;
+        posicaoPainelCentral.fill = GridBagConstraints.NONE;
+        posicaoPainelCentral.insets = new Insets(20, 0, 0, 0); // margem superior
+        painelFundo.add(painelCentral, posicaoPainelCentral);
 
         JLabel lblLogin = new JLabel("Login:");
         lblLogin.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -172,11 +172,12 @@ public class TelaLogin extends JFrame {
     public void fazerLogin() {
         botaoAcessar.addActionListener(new ActionListener() {
             UsuarioDao dao = new UsuarioDao();
+            TelaPrincipal principal = new TelaPrincipal();
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (dao.autenticarUsuario(txtLogin.getText(), txtSenha.getText())) {
-                    System.out.println("Login bem sucedido!");
+                    principal.telaPrincipal();
                 } else {
                     System.out.println("Email ou senha inválidos.");
                 }

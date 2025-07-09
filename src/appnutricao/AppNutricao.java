@@ -1,6 +1,7 @@
 package appnutricao;
 
 import appnutricao.util.dao.UsuarioDao;
+import appnutricao.view.TelaCadastroAlimento;
 import appnutricao.view.TelaCadastroUsuario;
 import appnutricao.view.TelaLogin;
 import appnutricao.view.TelaPrincipal;
@@ -12,12 +13,6 @@ public class AppNutricao {
         login.setVisible(true);
         login.fazerLogin();
         login.cadastrarUsuario();
-        
-        TelaCadastroUsuario cadastro = new TelaCadastroUsuario();
-        
-        cadastro.salvarUsuario();
-        cadastro.voltar();
-        
         
         /*UsuarioDao dao = new UsuarioDao();
         String email = "erick@email.com";
@@ -38,5 +33,6 @@ public class AppNutricao {
         System.out.println(autenticado ? "Login bem-sucedido" : "Email ou senha inválidos");*/
         
         //new TelaPrincipal().setVisible(true);
+        //new TelaCadastroAlimento().setVisible(true);
     }
 }

@@ -14,6 +14,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,10 @@ public class TelaPrincipal extends JFrame {
     private JButton botaoAdicionar = new JButton("Adicionar Alimento");
     private JButton botaoIMC = new JButton("Calcular IMC");
     private JButton botaoTmb = new JButton("Calcular TMB");
+    
+    private final String[] colunas = {"ID", "Nome", "Quantidade", "Proteína", "Carboidrato", "Gordura", "Kcal"};
+    DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
+    private List<Alimento> lista = new ArrayList<>();
 
     public TelaPrincipal() {
         setTitle("Tabela Alimentos");
@@ -67,7 +73,7 @@ public class TelaPrincipal extends JFrame {
         };
 
         painelTopo.setOpaque(false);
-        painelTopo.setPreferredSize(new Dimension(1000, 80));
+        painelTopo.setPreferredSize(new Dimension(450, 80));
         painelTopo.setLayout(new GridBagLayout());
 
         // Posicionamento no topo absoluto
@@ -131,14 +137,30 @@ public class TelaPrincipal extends JFrame {
 
         GridBagConstraints posicaoTable = new GridBagConstraints();
         posicaoTable.gridx = 0;
-        posicaoTable.gridy = 1;
-        posicaoTable.weightx = 0;
+        posicaoTable.gridy = 0;
+        posicaoTable.weightx = 2;
         posicaoTable.weighty = 0; // ← isso força ele a ficar no topo
-        posicaoTable.anchor = GridBagConstraints.CENTER;
+        posicaoTable.anchor = GridBagConstraints.NORTH;
         posicaoTable.fill = GridBagConstraints.NONE;
-        posicaoTable.insets = new Insets(0, 0, 0, 0); // margem superior
+        posicaoTable.insets = new Insets(120, 0, 0, 0); // margem superior
         painelFundo.add(table, posicaoTable);
 
         setContentPane(painelFundo);
+    }
+    
+    public void telaPrincipal() {
+        setVisible(true);
+        cadastrarAlimento();
+    }
+    
+    public void cadastrarAlimento() {
+        botaoAdicionar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaCadastroAlimento cadastroAlimento = new TelaCadastroAlimento();
+                cadastroAlimento.telaCadastrarAlimento();
+            }
+        });
     }
 }
