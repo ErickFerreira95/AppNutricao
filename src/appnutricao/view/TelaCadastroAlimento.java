@@ -253,6 +253,7 @@ public class TelaCadastroAlimento extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new TelaPrincipal().telaPrincipal();
             }
         });
     }
@@ -274,6 +275,7 @@ public class TelaCadastroAlimento extends JFrame {
 
                 dao.salvarAlimento(alimento);
                 dispose();
+                new TelaCadastroAlimento().telaCadastrarAlimento();
             }
         });
     }

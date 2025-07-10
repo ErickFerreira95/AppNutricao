@@ -193,6 +193,7 @@ public class TelaCadastroUsuario extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dao.salvarUsuario(txtNome.getText(), txtEmail.getText(), txtSenha.getText());
                 dispose();
+                new TelaLogin().login();
             }
         });
     }
@@ -204,6 +205,7 @@ public class TelaCadastroUsuario extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                new TelaLogin().login();
             }
         });
     }

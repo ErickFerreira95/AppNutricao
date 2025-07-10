@@ -9,10 +9,7 @@ import appnutricao.view.TelaPrincipal;
 public class AppNutricao {
     public static void main(String[] args) {
         
-        TelaLogin login = new TelaLogin();
-        login.setVisible(true);
-        login.fazerLogin();
-        login.cadastrarUsuario();
+        new TelaLogin().login();
         
         /*UsuarioDao dao = new UsuarioDao();
         String email = "erick@email.com";

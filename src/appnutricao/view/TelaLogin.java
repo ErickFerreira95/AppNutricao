@@ -168,6 +168,12 @@ public class TelaLogin extends JFrame {
 
         setContentPane(painelFundo);     
     }
+    
+    public void login() {
+        setVisible(true);
+        fazerLogin();
+        cadastrarUsuario();
+    }
 
     public void fazerLogin() {
         botaoAcessar.addActionListener(new ActionListener() {
@@ -178,6 +184,7 @@ public class TelaLogin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (dao.autenticarUsuario(txtLogin.getText(), txtSenha.getText())) {
                     principal.telaPrincipal();
+                    dispose();
                 } else {
                     System.out.println("Email ou senha inválidos.");
                 }
@@ -190,8 +197,9 @@ public class TelaLogin extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCadastroUsuario cadastroUsuario = new TelaCadastroUsuario();
-                cadastroUsuario.telaCadastrar();
+                dispose();
+                new TelaCadastroUsuario().telaCadastrar();
+                //cadastroUsuario.telaCadastrar();
             }
         });
     }

@@ -158,8 +158,8 @@ public class TelaPrincipal extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCadastroAlimento cadastroAlimento = new TelaCadastroAlimento();
-                cadastroAlimento.telaCadastrarAlimento();
+                dispose();
+                new TelaCadastroAlimento().telaCadastrarAlimento();
             }
         });
     }
