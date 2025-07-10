@@ -1,6 +1,7 @@
 package appnutricao.view;
 
 import appnutricao.model.Alimento;
+import appnutricao.util.dao.AlimentoDao;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,9 +37,12 @@ public class TelaPrincipal extends JFrame {
     private JButton botaoIMC = new JButton("Calcular IMC");
     private JButton botaoTmb = new JButton("Calcular TMB");
     
-    private final String[] colunas = {"ID", "Nome", "Quantidade", "Proteína", "Carboidrato", "Gordura", "Kcal"};
+    private JTable tabela;
+    private DefaultTableModel modelo;
+    
+    /*private final String[] colunas = {"ID", "Nome", "Quantidade", "Proteína", "Carboidrato", "Gordura", "Kcal"};
     DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
-    private List<Alimento> lista = new ArrayList<>();
+    private List<Alimento> lista = new ArrayList<>();*/
 
     public TelaPrincipal() {
         setTitle("Tabela Alimentos");
@@ -124,28 +128,31 @@ public class TelaPrincipal extends JFrame {
         gbcEspaco.weighty = 1; // ocupa o resto do espaço
         gbcEspaco.fill = GridBagConstraints.BOTH;
         painelFundo.add(Box.createVerticalGlue(), gbcEspaco);
-
-        String[] colunas = {"ID", "Nome", "Quantidade", "Proteína", "Carboidrato", "Gordura", "Kcal"};
-
-        DefaultTableModel tableModel = new DefaultTableModel(colunas, 1);
-
-        List<Alimento> lista = new ArrayList<>();
-
-        JTable table = new JTable(tableModel);
-
-        JScrollPane scrollPane = new JScrollPane(table);
-
+        
+        modelo = new DefaultTableModel(new String[]{"ID", "Nome Alimento", "Quantidade(g)", "Proteína(g)", "Carboidrato(g)", "Gordura(g)", "Kcal"}, 0);
+        tabela = new JTable(modelo);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(4).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(5).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(6).setPreferredWidth(150);
+        tabela.setPreferredScrollableViewportSize(new Dimension(800,500));
+        
         GridBagConstraints posicaoTable = new GridBagConstraints();
         posicaoTable.gridx = 0;
-        posicaoTable.gridy = 0;
-        posicaoTable.weightx = 2;
+        posicaoTable.gridy = 1;
+        posicaoTable.weightx = 0;
         posicaoTable.weighty = 0; // ← isso força ele a ficar no topo
-        posicaoTable.anchor = GridBagConstraints.NORTH;
+        posicaoTable.anchor = GridBagConstraints.CENTER;
         posicaoTable.fill = GridBagConstraints.NONE;
-        posicaoTable.insets = new Insets(120, 0, 0, 0); // margem superior
-        painelFundo.add(table, posicaoTable);
+        posicaoTable.insets = new Insets(0, 0, 0, 0); // margem superior
+        painelFundo.add(new JScrollPane(tabela), posicaoTable);
 
         setContentPane(painelFundo);
+        
+        carregarTabela();
     }
     
     public void telaPrincipal() {
@@ -162,5 +169,14 @@ public class TelaPrincipal extends JFrame {
                 new TelaCadastroAlimento().telaCadastrarAlimento();
             }
         });
+    }
+    
+    private void carregarTabela() {
+        AlimentoDao dao = new AlimentoDao();
+        List<Alimento> alimentos = dao.carregarAlimentos();
+
+        for (Alimento a : alimentos) {
+            modelo.addRow(new Object[]{a.getId(), a.getNomeAlimento(), a.getQuantidade(), a.getProteina(), a.getCarboidrato(), a.getGordura(), a.getKcal()});
+        }
     }
 }

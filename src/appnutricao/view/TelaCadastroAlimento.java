@@ -248,7 +248,6 @@ public class TelaCadastroAlimento extends JFrame {
     }
 
     public void voltar() {
-
         botaoVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -259,7 +258,6 @@ public class TelaCadastroAlimento extends JFrame {
     }
 
     public void salvarAlimento() {
-
         botaoCadastrar.addActionListener(new ActionListener() {
             AlimentoDao dao = new AlimentoDao();
             Alimento alimento = new Alimento();
