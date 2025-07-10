@@ -5,8 +5,10 @@ import appnutricao.util.dao.AlimentoDao;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -28,7 +30,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaPrincipal extends JFrame {
@@ -36,14 +40,13 @@ public class TelaPrincipal extends JFrame {
     private JButton botaoAdicionar = new JButton("Adicionar Alimento");
     private JButton botaoIMC = new JButton("Calcular IMC");
     private JButton botaoTmb = new JButton("Calcular TMB");
-    
+
     private JTable tabela;
     private DefaultTableModel modelo;
-    
+
     /*private final String[] colunas = {"ID", "Nome", "Quantidade", "Proteína", "Carboidrato", "Gordura", "Kcal"};
     DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
     private List<Alimento> lista = new ArrayList<>();*/
-
     public TelaPrincipal() {
         setTitle("Tabela Alimentos");
         setSize(1280, 720);
@@ -128,7 +131,7 @@ public class TelaPrincipal extends JFrame {
         gbcEspaco.weighty = 1; // ocupa o resto do espaço
         gbcEspaco.fill = GridBagConstraints.BOTH;
         painelFundo.add(Box.createVerticalGlue(), gbcEspaco);
-        
+
         modelo = new DefaultTableModel(new String[]{"ID", "Nome Alimento", "Quantidade(g)", "Proteína(g)", "Carboidrato(g)", "Gordura(g)", "Kcal"}, 0);
         tabela = new JTable(modelo);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -138,8 +141,20 @@ public class TelaPrincipal extends JFrame {
         tabela.getColumnModel().getColumn(4).setPreferredWidth(150);
         tabela.getColumnModel().getColumn(5).setPreferredWidth(150);
         tabela.getColumnModel().getColumn(6).setPreferredWidth(150);
-        tabela.setPreferredScrollableViewportSize(new Dimension(800,500));
-        
+        tabela.setPreferredScrollableViewportSize(new Dimension(800, 500));
+        tabela.getTableHeader().setBackground(Color.WHITE);
+        tabela.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 14));
+        tabela.setFont(new Font("Calibri", Font.PLAIN, 14));
+        tabela.setRowHeight(25);
+
+        DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();
+        centralizado.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Aplica o alinhamento a todas as colunas
+        for (int i = 0; i < tabela.getColumnCount(); i++) {
+            tabela.getColumnModel().getColumn(i).setCellRenderer(centralizado);
+        }
+
         GridBagConstraints posicaoTable = new GridBagConstraints();
         posicaoTable.gridx = 0;
         posicaoTable.gridy = 1;
@@ -151,16 +166,17 @@ public class TelaPrincipal extends JFrame {
         painelFundo.add(new JScrollPane(tabela), posicaoTable);
 
         setContentPane(painelFundo);
-        
+
         carregarTabela();
     }
-    
+
     public void telaPrincipal() {
         setVisible(true);
-        cadastrarAlimento();
+        cadastrarAlimentoView();
+        calcularTmbView();
     }
-    
-    public void cadastrarAlimento() {
+
+    public void cadastrarAlimentoView() {
         botaoAdicionar.addActionListener(new ActionListener() {
 
             @Override
@@ -170,7 +186,7 @@ public class TelaPrincipal extends JFrame {
             }
         });
     }
-    
+
     private void carregarTabela() {
         AlimentoDao dao = new AlimentoDao();
         List<Alimento> alimentos = dao.carregarAlimentos();
@@ -178,5 +194,16 @@ public class TelaPrincipal extends JFrame {
         for (Alimento a : alimentos) {
             modelo.addRow(new Object[]{a.getId(), a.getNomeAlimento(), a.getQuantidade(), a.getProteina(), a.getCarboidrato(), a.getGordura(), a.getKcal()});
         }
+    }
+    
+    public void calcularTmbView() {
+        botaoTmb.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new TelaCalculoTmb().TelaTmb();
+            }
+        });
     }
 }

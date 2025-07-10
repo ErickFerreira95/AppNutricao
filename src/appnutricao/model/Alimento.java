@@ -1,5 +1,7 @@
 package appnutricao.model;
 
+import java.text.DecimalFormat;
+
 public class Alimento {
 
     private int id;
@@ -53,8 +55,9 @@ public class Alimento {
 
     public String getKcal() {
         kcalNumero = (Float.parseFloat(proteina) * 4) + (Float.parseFloat(carboidrato) * 4) + (Float.parseFloat(gordura) * 9);
-        kcal = String.valueOf(kcalNumero);
-        return kcal;
+        DecimalFormat formato = new DecimalFormat("#0.0");
+        String resultado = formato.format(kcalNumero);
+        return resultado;
     }
 
     public void setKcal(String kcal) {

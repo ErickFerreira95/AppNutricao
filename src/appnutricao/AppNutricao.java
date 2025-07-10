@@ -3,14 +3,17 @@ package appnutricao;
 import appnutricao.util.dao.UsuarioDao;
 import appnutricao.view.TelaCadastroAlimento;
 import appnutricao.view.TelaCadastroUsuario;
+import appnutricao.view.TelaCalculoTmb;
 import appnutricao.view.TelaLogin;
 import appnutricao.view.TelaPrincipal;
 
 public class AppNutricao {
     public static void main(String[] args) {
         
-        //new TelaLogin().login();
-        new TelaPrincipal().telaPrincipal();
+        new TelaLogin().login();
+        //new TelaPrincipal().telaPrincipal();
+        
+        //new TelaCalculoTmb().TelaTmb();
         
         /*UsuarioDao dao = new UsuarioDao();
         String email = "erick@email.com";

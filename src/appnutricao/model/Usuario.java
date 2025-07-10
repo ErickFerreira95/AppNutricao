@@ -3,7 +3,24 @@ package appnutricao.model;
 public class Usuario {
 
     private int id;
-    private String nome, email, senha, permissao;
+    private String nome, email, senha;
+    private double imc, tmb;
+
+    public double getImc() {
+        return imc;
+    }
+
+    public void setImc(double imc) {
+        this.imc = imc;
+    }
+
+    public double getTmb() {
+        return tmb;
+    }
+
+    public void setTmb(double tmb) {
+        this.tmb = tmb;
+    }
 
     public int getId() {
         return id;
@@ -35,13 +52,5 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getPermissao() {
-        return permissao;
-    }
-
-    public void setPermissao(String permissao) {
-        this.permissao = permissao;
     }
 }
