@@ -10,8 +10,8 @@ import appnutricao.view.TelaPrincipal;
 public class AppNutricao {
     public static void main(String[] args) {
         
-        new TelaLogin().login();
-        //new TelaPrincipal().telaPrincipal();
+        //new TelaLogin().login();
+        new TelaPrincipal().telaPrincipal();
         
         //new TelaCalculoTmb().TelaTmb();
         
