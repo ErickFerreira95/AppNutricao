@@ -1,5 +1,7 @@
 package appnutricao.view;
 
+import appnutricao.model.Alimento;
+import appnutricao.util.dao.AlimentoDao;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -35,9 +37,9 @@ public class PanelEditor extends AbstractCellEditor implements TableCellEditor {
         posicaoBtnEditar.weighty = 0; // ← isso força ele a ficar no topo
         posicaoBtnEditar.anchor = GridBagConstraints.CENTER;
         posicaoBtnEditar.fill = GridBagConstraints.NONE;
-        posicaoBtnEditar.insets = new Insets(0, 0, 0,15); // margem superior
+        posicaoBtnEditar.insets = new Insets(0, 0, 0, 15); // margem superior
         painel.add(btnEditar, posicaoBtnEditar);
-        
+
         GridBagConstraints posicaoBtnExcluir = new GridBagConstraints();
         posicaoBtnExcluir.gridx = 1;
         posicaoBtnExcluir.gridy = 0;
@@ -56,21 +58,49 @@ public class PanelEditor extends AbstractCellEditor implements TableCellEditor {
         });
 
         btnExcluir.addActionListener(e -> {
-            int row = table.getEditingRow();
-            String nome = table.getValueAt(row, 0).toString();
+            JTable tabela = table;
+            AlimentoDao dao = new AlimentoDao();
+            int row = tabela.getEditingRow();
 
-            int confirm = JOptionPane.showConfirmDialog(table, "Excluir " + nome + "?", "Confirmação", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                ((DefaultTableModel) table.getModel()).removeRow(row);
+            if (row != -1) {
+                int id = (int) tabela.getValueAt(row, 0);
+
+                int confirmar = JOptionPane.showConfirmDialog(
+                        tabela,
+                        "Deseja excluir o item com ID " + id + "?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirmar == JOptionPane.YES_OPTION) {
+                    // Pare a edição ANTES de remover a linha
+                    fireEditingStopped();
+
+                    boolean deletado = dao.deletarAlimento(id);
+                    if (deletado) {
+                        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+                        modelo.removeRow(row);
+
+                        // Evita renderização indevida após a remoção da última linha
+                        if (modelo.getRowCount() == 0) {
+                            tabela.clearSelection();
+                        }
+
+                        JOptionPane.showMessageDialog(tabela, "Item deletado com sucesso.");
+                    } else {
+                        JOptionPane.showMessageDialog(tabela, "Erro ao deletar do banco de dados.");
+                    }
+                } else {
+                    fireEditingStopped(); // também necessário se cancelado
+                }
             }
-
-            fireEditingStopped();
         });
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
+            boolean isSelected, int row, int column
+    ) {
         return painel;
     }
 

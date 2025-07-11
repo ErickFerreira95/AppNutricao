@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class AlimentoDao {
 
@@ -67,5 +68,18 @@ public class AlimentoDao {
             e.printStackTrace(); // ou log
         }
         return lista;
+    }
+    
+    public boolean deletarAlimento(int id) {
+        try (Connection conn = conexaoBd.getConexaoBd()) {
+            String sql = "DELETE FROM alimentos WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

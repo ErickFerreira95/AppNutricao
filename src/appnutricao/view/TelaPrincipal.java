@@ -217,4 +217,12 @@ public class TelaPrincipal extends JFrame {
             }
         });
     }
+    
+    public JTable getTabela() {
+        return tabela;
+    }
+    
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
 }
