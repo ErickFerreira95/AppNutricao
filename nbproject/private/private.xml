@@ -5,9 +5,10 @@
         <group>
             <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/AppNutricao.java</file>
             <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/view/TelaPrincipal.java</file>
-            <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/util/dao/AlimentoDao.java</file>
-            <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/model/Alimento.java</file>
             <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/view/TelaLogin.java</file>
+            <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/view/TelaCalculoTmb.java</file>
+            <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/view/TelaCadastroAlimento.java</file>
+            <file>file:/C:/Users/Erick/OneDrive/Documentos/NetBeansProjects/1-Projetos/AppNutricao/src/appnutricao/model/Alimento.java</file>
         </group>
     </open-files>
 </project-private>

@@ -1,6 +1,7 @@
 package appnutricao.view;
 
 import appnutricao.model.Usuario;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,6 +17,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class TelaCalculoTmb extends JFrame {
 
@@ -84,6 +90,57 @@ public class TelaCalculoTmb extends JFrame {
         posicaoPainelCentral.fill = GridBagConstraints.NONE;
         posicaoPainelCentral.insets = new Insets(0, 0, 0, 0); // margem superior
         painelFundo.add(painelCentral, posicaoPainelCentral);
+
+        // Painel transparente com cantos arredondados
+        JPanel painelCentral2 = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Shape forma = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 30, 30);
+                g2.setColor(new Color(255, 255, 255, 200));
+                g2.fill(forma);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+
+        painelCentral2.setOpaque(false);
+        painelCentral2.setPreferredSize(new Dimension(500, 300));
+        painelCentral2.setLayout(new GridBagLayout());
+
+        // Posicionamento no topo absoluto
+        GridBagConstraints posicaoPainelCentral2 = new GridBagConstraints();
+        posicaoPainelCentral2.gridx = 1;
+        posicaoPainelCentral2.gridy = 0;
+        posicaoPainelCentral2.weightx = 0;
+        posicaoPainelCentral2.weighty = 0; // ← isso força ele a ficar no topo
+        posicaoPainelCentral2.anchor = GridBagConstraints.CENTER;
+        posicaoPainelCentral2.fill = GridBagConstraints.NONE;
+        posicaoPainelCentral2.insets = new Insets(0, 50, 0, 0); // margem superior
+        painelFundo.add(painelCentral2, posicaoPainelCentral2);
+
+        String texto = "<html><div style='width:300px;'>"
+                + "<b>Fator de atividade (FA):</b><br><br>"
+                + "1,3 - sedentário.<br>"
+                + "1,4 - levemente ativo.<br>"
+                + "1,5 - treino e cardio iniciante a intermediário quase todos os dias, com rotina de pouca atividade.<br>"
+                + "1,6 - treino e cardio avançado ou extremamente avançado com rotina de pouca atividade.<br>"
+                + "1,7 - treino e cardio avançado ou extremamente avançado com rotina de muita atividade ou hormonizado."
+                + "</div></html>";
+
+        JLabel lblTexto = new JLabel(texto);
+        lblTexto.setFont(new Font("Calibri", Font.BOLD, 18));
+
+        GridBagConstraints posicaoLblTexto = new GridBagConstraints();
+        posicaoLblTexto.gridx = 0;
+        posicaoLblTexto.gridy = 0;
+        posicaoLblTexto.weightx = 0;
+        posicaoLblTexto.weighty = 0; // ← isso força ele a ficar no topo
+        posicaoLblTexto.anchor = GridBagConstraints.CENTER;
+        posicaoLblTexto.fill = GridBagConstraints.NONE;
+        posicaoLblTexto.insets = new Insets(0, 20, 0, 20); // margem superior
+        painelCentral2.add(lblTexto, posicaoLblTexto);
 
         JLabel lblGenero = new JLabel("Gênero:");
         lblGenero.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -285,21 +342,25 @@ public class TelaCalculoTmb extends JFrame {
                 if (comboBox.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(null, "Selecione um gênero!");
                 } else if (comboBox.getSelectedIndex() == 1) {
-                    tmb = Double.parseDouble(txtFatorAtividade.getText()) * (88.362 + (13.397 * Double.parseDouble(txtPeso.getText()))
+                    double fatorAtividade = Double.parseDouble(txtFatorAtividade.getText().replace(",", "."));
+                    tmb = fatorAtividade * (88.362 + (13.397 * Double.parseDouble(txtPeso.getText()))
                             + (4.799 * Double.parseDouble(txtAltura.getText())) - (5.677 * Double.parseDouble(txtIdade.getText())));
+
                     double resultado = Math.round(tmb);
                     lblResultado.setText("Seu TMB é: " + resultado);
 
                 } else {
-                    tmb = Double.parseDouble(txtFatorAtividade.getText()) * (447.593 + (9.247 * Double.parseDouble(txtPeso.getText()))
+                    double fatorAtividade = Double.parseDouble(txtFatorAtividade.getText().replace(",", "."));
+                    tmb = fatorAtividade * (447.593 + (9.247 * Double.parseDouble(txtPeso.getText()))
                             + (3.098 * Double.parseDouble(txtAltura.getText())) - (4.330 * Double.parseDouble(txtIdade.getText())));
+
                     double resultado = Math.round(tmb);
                     lblResultado.setText("Seu TMB é: " + resultado);
                 }
             }
         });
     }
-    
+
     public void voltar() {
         botaoVoltar.addActionListener(new ActionListener() {
             @Override

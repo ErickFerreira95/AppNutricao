@@ -52,9 +52,14 @@ public class Alimento {
     public void setGordura(String gordura) {
         this.gordura = gordura;
     }
-
+    
     public String getKcal() {
-        kcalNumero = (Float.parseFloat(proteina) * 4) + (Float.parseFloat(carboidrato) * 4) + (Float.parseFloat(gordura) * 9);
+        double quantidade = Double.parseDouble(getQuantidade().replace(",", "."));
+        double proteina = Double.parseDouble(getProteina().replace(",", "."));
+        double carboidrato = Double.parseDouble(getCarboidrato().replace(",", "."));
+        double gordura = Double.parseDouble(getGordura().replace(",", "."));
+        
+        kcalNumero = (proteina * 4) + (carboidrato * 4) + (gordura * 9);
         DecimalFormat formato = new DecimalFormat("#0.0");
         String resultado = formato.format(kcalNumero);
         return resultado;
